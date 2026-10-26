@@ -1,0 +1,224 @@
+[
+  {
+    "captured_at": "2026-10-26T04:45:55.955277+08:00",
+    "question": "你們每天幾點開門、幾點打烊？",
+    "history": [
+      {
+        "role": "assistant",
+        "metadata": null,
+        "content": [
+          {
+            "text": "你好！我是巷口便利商店的小幫手，可以查詢商品、營業資訊，或幫你試算優惠後的金額。",
+            "type": "text"
+          }
+        ],
+        "options": null
+      }
+    ],
+    "answer": "\n我們每天早上 07:00 開門，晚上 23:00 打烊。如有節日特別安排，請另行參考公告。祝您購物愉快！",
+    "trace": [
+      {
+        "step": 1,
+        "tool": "get_shop_info",
+        "arguments": {
+          "topic": "opening_hours"
+        },
+        "result": {
+          "found": true,
+          "topic": "opening_hours",
+          "content": "每日 07:00–23:00，示範資料未提供特殊節日營業時間。"
+        }
+      }
+    ],
+    "status": "ok",
+    "model_calls": 2
+  },
+  {
+    "captured_at": "2026-10-26T16:14:18.504360+08:00",
+    "question": "你們平常的營業時間是幾點到幾點？",
+    "history": [
+      {
+        "role": "assistant",
+        "metadata": null,
+        "content": [
+          {
+            "text": "你好！我是巷口便利商店的小幫手，可以查詢商品、營業資訊，或幫你試算優惠後的金額。",
+            "type": "text"
+          }
+        ],
+        "options": null
+      }
+    ],
+    "answer": "\n\n我們每天的營業時間是早上 07:00 到晚上 23:00。若有特殊節日變動，建議您來店前再確認一下。需要其他資訊嗎？祝您購物愉快！",
+    "trace": [
+      {
+        "step": 1,
+        "tool": "get_shop_info",
+        "arguments": {
+          "topic": "opening_hours"
+        },
+        "result": {
+          "found": true,
+          "topic": "opening_hours",
+          "content": "每日 07:00–23:00，示範資料未提供特殊節日營業時間。"
+        }
+      }
+    ],
+    "status": "ok",
+    "model_calls": 2
+  },
+  {
+    "captured_at": "2026-10-26T16:24:52.132081+08:00",
+    "question": "買 3 杯中杯熱拿鐵，加 1 個購物袋，總共多少錢？請說明優惠。",
+    "history": [],
+    "answer": "\n3 杯中杯熱拿鐵的總價為 145 元（含 1 個購物袋 2 元）。  \n依據「同商品第二件6折」優惠，第 2 杯拿鐵以 6 折計算（單價 33 元），其餘兩杯為原價 55 元，故商品小計為 143 元。  \n加上購物袋費 2 元，最終應付金額為 145 元。",
+    "trace": [
+      {
+        "step": 1,
+        "tool": "search_products",
+        "arguments": {
+          "keyword": "中杯熱拿鐵"
+        },
+        "result": {
+          "found": true,
+          "currency": "TWD",
+          "products": [
+            {
+              "product_id": "P002",
+              "name": "中杯熱拿鐵",
+              "category": "咖啡",
+              "price_twd": 55,
+              "available": 1,
+              "stock": 30,
+              "second_item_offer": 1,
+              "aliases": "拿鐵|熱拿鐵|latte"
+            }
+          ]
+        }
+      },
+      {
+        "step": 2,
+        "tool": "calculate_checkout",
+        "arguments": {
+          "items": [
+            {
+              "product_id": "P002",
+              "quantity": 3
+            }
+          ],
+          "bag_quantity": 1
+        },
+        "result": {
+          "ok": true,
+          "currency": "TWD",
+          "quote_only": true,
+          "lines": [
+            {
+              "product_id": "P002",
+              "name": "中杯熱拿鐵",
+              "quantity": 3,
+              "unit_price_twd": 55,
+              "discounted_units": 1,
+              "original_subtotal_twd": 165,
+              "discounted_unit_price_twd": 33,
+              "promotion_label": "同商品第二件6折",
+              "discount_twd": 22,
+              "subtotal_twd": 143
+            }
+          ],
+          "original_goods_subtotal_twd": 165,
+          "goods_subtotal_twd": 143,
+          "discount_twd": 22,
+          "bag_quantity": 1,
+          "bag_unit_price_twd": 2,
+          "bag_fee_twd": 2,
+          "total_twd": 145
+        }
+      }
+    ],
+    "status": "ok",
+    "model_calls": 3
+  },
+  {
+    "captured_at": "2026-10-26T16:29:31.602384+08:00",
+    "question": "你們有賣榴槤嗎？",
+    "history": [],
+    "answer": "\n\n我們目前沒有販售榴槤。若您想查看其他商品或有其他需求，請告訴我！",
+    "trace": [
+      {
+        "step": 1,
+        "tool": "search_products",
+        "arguments": {
+          "keyword": "榴槤"
+        },
+        "result": {
+          "found": false,
+          "currency": "TWD",
+          "products": []
+        }
+      }
+    ],
+    "status": "ok",
+    "model_calls": 2
+  },
+  {
+    "captured_at": "2026-10-26T16:35:40.198941+08:00",
+    "question": "你們有賣榴槤嗎？",
+    "history": [
+      {
+        "role": "assistant",
+        "metadata": null,
+        "content": [
+          {
+            "text": "你好！我是巷口便利商店的小幫手，可以查詢商品、營業資訊，或幫你試算優惠後的金額。",
+            "type": "text"
+          }
+        ],
+        "options": null
+      }
+    ],
+    "answer": "\n\n目前查不到榴槤的販售資訊。如需進一步協助，可於服務時間聯絡 **service@corner-demo.example**（每日 09:00–18:00）。",
+    "trace": [
+      {
+        "step": 1,
+        "tool": "search_products",
+        "arguments": {
+          "keyword": "榴槤"
+        },
+        "result": {
+          "found": false,
+          "currency": "TWD",
+          "products": []
+        }
+      },
+      {
+        "step": 2,
+        "tool": "transfer_to_human",
+        "arguments": {
+          "reason": "商品資料未提供榴槤資訊"
+        },
+        "result": {
+          "status": "contact_provided",
+          "connected": false,
+          "reason": "商品資料未提供榴槤資訊",
+          "contact": {
+            "email": "service@corner-demo.example",
+            "service_hours": "每日 09:00–18:00",
+            "demo_only": true
+          }
+        }
+      }
+    ],
+    "status": "ok",
+    "model_calls": 3
+  },
+  {
+    "captured_at": "2026-10-26T16:39:53.671408+08:00",
+    "question": "請幫我寫一首以便利商店為主題的詩。",
+    "history": [],
+    "answer": "\n\n我只能協助本店商品、營業資訊與優惠試算，請問你想查詢什麼？",
+    "trace": [],
+    "status": "ok",
+    "model_calls": 1
+  }
+]

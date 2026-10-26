@@ -61,7 +61,26 @@ Suggested questions for the four required screenshot conversations:
 - Missing data: `你們有賣榴槤嗎？`
 - Out of scope: `幫我寫一首詩。`
 
-Real-model screenshots for these conversations still need to be added.
+The screenshots below show real model replies and their tool traces. Some JSON
+nodes are collapsed for readability; complete arguments and results are retained
+in the saved conversation and evaluation records.
+
+### In the Data
+
+![Opening hours and database lookup](images/report-01-in-data.jpg)
+
+### Needs Calculation
+
+![Checkout quote with the calculation tool result](images/report-02-calculation.jpg)
+
+### Missing Data
+
+![Missing product information and human-contact result](images/report-03-missing-data.jpg)
+
+### Out of Scope
+
+![Creative-writing refusal with no tool calls](images/report-04-out-of-scope.jpg)
+
 The homework's predefined 10-question tool-choice evaluation is in
 `tool_choice_cases.json` and `evaluate_tool_choices.py`; its results are kept
 separately from the offline unit tests.
@@ -85,10 +104,21 @@ Chinese and English reports are generated as `report-zh.md` and `report-en.md`.
 The tool score includes argument/data checks. Answer content is reviewed separately;
 no-tool usage alone does not prove a correct scope refusal.
 
-The formal run on **2026-10-26 (Asia/Taipei)** used **Furen-large** and passed
-**10/10 tool-choice cases (100%)**. All ten answer-content checks also passed.
-This was one run of the fixed question set, with 23 model requests and 13 tool
-calls. No additional fix or retest was needed during this formal round.
+The initial formal run on **2026-10-26 (Asia/Taipei)** used **Furen-large** and
+passed **10/10 tool-choice cases (100%)**. A later screenshot check exposed an
+omitted human-contact step after a missing-product lookup. The prompt was
+strengthened with an explicit `found=false` workflow and example, then the same
+ten questions were repeated. The updated run also passed **10/10**, with all ten
+answer-content checks passing. It used 23 model requests and 13 tool calls.
+
+- [Latest Chinese report](test-results/tool-choice-20261026-164053-report-retest/report-zh.md)
+- [Latest English report](test-results/tool-choice-20261026-164053-report-retest/report-en.md)
+- [Latest full evaluation record](test-results/tool-choice-20261026-164053-report-retest/results.json)
+- [Screenshot-session conversations, including the extra failure](test-results/report-conversations.json)
+
+![Saved output summary of the updated tool-choice test](images/report-05-tool-choice-output.jpg)
+
+The initial formal run is retained for comparison:
 
 - [Chinese report](test-results/tool-choice-20261026-041903-initial/report-zh.md)
 - [English report for the homework](test-results/tool-choice-20261026-041903-initial/report-en.md)
@@ -110,6 +140,7 @@ customer-service/
 ├── .env.example        # empty API key
 ├── .gitignore
 ├── tests/              # offline behavior and evaluation-grading tests
+├── images/             # real Gradio screenshots and evaluation output
 └── README.md
 ```
 
@@ -151,8 +182,7 @@ python -m unittest discover -s tests -v
 - Quotes do not create orders, reserve stock or charge a payment.
 - Each startup reloads the CSV data, so edit the CSV files to change shop facts.
 - `.env` and `*.db` are excluded from Git. The database is recreated from CSV.
-- Before submission, add real-model screenshots, your student details, the public
-  GitHub URL and the English PDF report. Include the saved tool-choice results in
-  the report's testing section.
+- The English report is prepared separately for course-site submission. Include
+  the saved tool-choice results and real conversation screenshots in its testing section.
 - Function-calling message format follows the
   [official OpenAI documentation](https://developers.openai.com/api/docs/guides/function-calling).
