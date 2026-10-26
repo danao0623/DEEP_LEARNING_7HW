@@ -127,7 +127,7 @@ The initial formal run is retained for comparison:
 ## Project Files
 
 ```text
-customer-service/
+DEEP_LEARNING_7HW/
 ├── app.py              # Gradio interface and startup
 ├── agent.py            # settings, system prompt and model/tool loop
 ├── database.py         # CSV -> SQLite
@@ -146,7 +146,14 @@ customer-service/
 
 ## How to Install and Run It
 
-Use Python 3.10 or newer. In a PowerShell terminal opened in this project folder:
+Use Python 3.10 or newer. Download the project in a PowerShell terminal:
+
+```powershell
+git clone https://github.com/danao0623/DEEP_LEARNING_7HW.git
+cd DEEP_LEARNING_7HW
+```
+
+Then create the environment and install the packages from the project folder:
 
 ```powershell
 python -m venv .venv
@@ -176,13 +183,14 @@ python -m unittest discover -s tests -v
 
 ## Notes
 
-- This is a working starter for the app portion, not a completed homework submission.
+- This repository contains the completed HW7 app, screenshots and saved test records.
+  The PDF report is submitted separately through the course site.
 - The human tool only provides a fictional contact address; it does not notify or
   connect to any real person.
 - Quotes do not create orders, reserve stock or charge a payment.
 - Each startup reloads the CSV data, so edit the CSV files to change shop facts.
 - `.env` and `*.db` are excluded from Git. The database is recreated from CSV.
-- The English report is prepared separately for course-site submission. Include
-  the saved tool-choice results and real conversation screenshots in its testing section.
+- The English PDF report includes the saved tool-choice results and the four real
+  conversation screenshots with their tool traces.
 - Function-calling message format follows the
   [official OpenAI documentation](https://developers.openai.com/api/docs/guides/function-calling).
