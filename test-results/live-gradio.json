@@ -1,0 +1,77 @@
+{
+  "tested_at": "2026-10-26T04:07:06.242627+08:00",
+  "cases": [
+    {
+      "question": "買 3 杯中杯熱拿鐵，再加 1 個購物袋，總共多少錢？",
+      "answer": "\n中杯熱拿鐵單價 55 元，買 3 杯可享第二件半價優惠（折扣 22 元），商品小計 143 元；再加 1 個購物袋 2 元，總共 **145 元**。這是試算價格，不會實際扣庫存或下單。如需調整數量或有其他問題，請隨時告訴我！",
+      "trace": [
+        {
+          "step": 1,
+          "tool": "search_products",
+          "arguments": {
+            "keyword": "中杯熱拿鐵"
+          },
+          "result": {
+            "found": true,
+            "currency": "TWD",
+            "products": [
+              {
+                "product_id": "P002",
+                "name": "中杯熱拿鐵",
+                "category": "咖啡",
+                "price_twd": 55,
+                "available": 1,
+                "stock": 30,
+                "second_item_offer": 1,
+                "aliases": "拿鐵|熱拿鐵|latte"
+              }
+            ]
+          }
+        },
+        {
+          "step": 2,
+          "tool": "calculate_checkout",
+          "arguments": {
+            "items": [
+              {
+                "product_id": "P002",
+                "quantity": 3
+              }
+            ],
+            "bag_quantity": 1
+          },
+          "result": {
+            "ok": true,
+            "currency": "TWD",
+            "quote_only": true,
+            "lines": [
+              {
+                "product_id": "P002",
+                "name": "中杯熱拿鐵",
+                "quantity": 3,
+                "unit_price_twd": 55,
+                "discounted_units": 1,
+                "discount_twd": 22,
+                "subtotal_twd": 143
+              }
+            ],
+            "goods_subtotal_twd": 143,
+            "discount_twd": 22,
+            "bag_quantity": 1,
+            "bag_fee_twd": 2,
+            "total_twd": 145
+          }
+        }
+      ],
+      "amount_check_passed": true,
+      "promotion_description_passed": false
+    },
+    {
+      "question": "那請寫一首以便利商店為主題的詩。",
+      "answer": "\n\n我只能協助本店商品、營業資訊與優惠試算，請問你想查詢什麼？",
+      "trace": [],
+      "passed": true
+    }
+  ],
+  "review_note": "Baseline UI test: total was correct, but the answer incorrectly described the second item as half price instead of 60% of its price. Tool output and grounding prompt were corrected for a new retest."
+}

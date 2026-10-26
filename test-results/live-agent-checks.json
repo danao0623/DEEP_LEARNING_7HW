@@ -1,0 +1,188 @@
+[
+  {
+    "category": "calculation",
+    "tested_at": "2026-10-26T04:03:45.198271+08:00",
+    "question": "買 3 杯中杯熱拿鐵，再加 1 個購物袋，總共多少錢？",
+    "status": "ok",
+    "model_calls": 3,
+    "elapsed_seconds": 16.02,
+    "answer": "\n\n3 杯中杯熱拿鐵的原價為 55 × 3 = 165 元，享有第二件優惠後折扣 22 元，商品小計為 143 元。加購 1 個購物袋（每袋 2 元），總共 143 + 2 = **145 元**。",
+    "trace": [
+      {
+        "step": 1,
+        "tool": "search_products",
+        "arguments": {
+          "keyword": "中杯熱拿鐵"
+        },
+        "result": {
+          "found": true,
+          "currency": "TWD",
+          "products": [
+            {
+              "product_id": "P002",
+              "name": "中杯熱拿鐵",
+              "category": "咖啡",
+              "price_twd": 55,
+              "available": 1,
+              "stock": 30,
+              "second_item_offer": 1,
+              "aliases": "拿鐵|熱拿鐵|latte"
+            }
+          ]
+        }
+      },
+      {
+        "step": 2,
+        "tool": "calculate_checkout",
+        "arguments": {
+          "items": [
+            {
+              "product_id": "P002",
+              "quantity": 3
+            }
+          ],
+          "bag_quantity": 1
+        },
+        "result": {
+          "ok": true,
+          "currency": "TWD",
+          "quote_only": true,
+          "lines": [
+            {
+              "product_id": "P002",
+              "name": "中杯熱拿鐵",
+              "quantity": 3,
+              "unit_price_twd": 55,
+              "discounted_units": 1,
+              "discount_twd": 22,
+              "subtotal_twd": 143
+            }
+          ],
+          "goods_subtotal_twd": 143,
+          "discount_twd": 22,
+          "bag_quantity": 1,
+          "bag_fee_twd": 2,
+          "total_twd": 145
+        }
+      }
+    ]
+  },
+  {
+    "category": "follow_up",
+    "tested_at": "2026-10-26T04:03:58.925378+08:00",
+    "question": "如果改成 4 杯，袋子仍然 1 個呢？",
+    "status": "ok",
+    "model_calls": 3,
+    "elapsed_seconds": 9.72,
+    "answer": "\n\n4 杯中杯熱拿鐵的原價為 55 × 4 = 220 元，根據「第二件優惠」可折抵 44 元，商品小計為 176 元。加購 1 個購物袋（每袋 2 元），總共 **178 元**。",
+    "trace": [
+      {
+        "step": 1,
+        "tool": "search_products",
+        "arguments": {
+          "keyword": "中杯熱拿鐵"
+        },
+        "result": {
+          "found": true,
+          "currency": "TWD",
+          "products": [
+            {
+              "product_id": "P002",
+              "name": "中杯熱拿鐵",
+              "category": "咖啡",
+              "price_twd": 55,
+              "available": 1,
+              "stock": 30,
+              "second_item_offer": 1,
+              "aliases": "拿鐵|熱拿鐵|latte"
+            }
+          ]
+        }
+      },
+      {
+        "step": 2,
+        "tool": "calculate_checkout",
+        "arguments": {
+          "items": [
+            {
+              "product_id": "P002",
+              "quantity": 4
+            }
+          ],
+          "bag_quantity": 1
+        },
+        "result": {
+          "ok": true,
+          "currency": "TWD",
+          "quote_only": true,
+          "lines": [
+            {
+              "product_id": "P002",
+              "name": "中杯熱拿鐵",
+              "quantity": 4,
+              "unit_price_twd": 55,
+              "discounted_units": 2,
+              "discount_twd": 44,
+              "subtotal_twd": 176
+            }
+          ],
+          "goods_subtotal_twd": 176,
+          "discount_twd": 44,
+          "bag_quantity": 1,
+          "bag_fee_twd": 2,
+          "total_twd": 178
+        }
+      }
+    ]
+  },
+  {
+    "category": "missing_data",
+    "tested_at": "2026-10-26T04:04:08.328874+08:00",
+    "question": "你們有賣榴槤嗎？",
+    "status": "ok",
+    "model_calls": 3,
+    "elapsed_seconds": 5.41,
+    "answer": "\n\n我查詢了店內商品，目前沒有榴槤的販售資訊。若您想了解其他商品或需要進一步協助，可以聯絡我們的客服：service@corner-demo.example，服務時間每日 09:00–18:00。這僅為示範聯絡方式，實際未轉接真人。",
+    "trace": [
+      {
+        "step": 1,
+        "tool": "search_products",
+        "arguments": {
+          "keyword": "榴槤"
+        },
+        "result": {
+          "found": false,
+          "currency": "TWD",
+          "products": []
+        }
+      },
+      {
+        "step": 2,
+        "tool": "transfer_to_human",
+        "arguments": {
+          "reason": "客人查詢榴槤，店家無此商品資訊"
+        },
+        "result": {
+          "status": "contact_provided",
+          "connected": false,
+          "reason": "客人查詢榴槤，店家無此商品資訊",
+          "contact": {
+            "email": "service@corner-demo.example",
+            "service_hours": "每日 09:00–18:00",
+            "demo_only": true
+          }
+        }
+      }
+    ]
+  },
+  {
+    "category": "out_of_scope",
+    "tested_at": "2026-10-26T04:04:15.006398+08:00",
+    "question": "幫我寫一首詩。",
+    "status": "ok",
+    "model_calls": 1,
+    "elapsed_seconds": 2.67,
+    "answer": "\n\n夜深巷口燈火微，  \n便利商店的門半掩，  \n熱茶冒起淡淡霧，  \n像是時間在輕聲低語。\n\n貨架上排列的糖果與飲料，  \n像是星星在都市的縫隙裡閃爍，  \n每一件小小的物品，  \n都藏著有人深夜的思念與慰藉。\n\n當風吹過街角的報紙，  \n頁頭的標題與促銷單交織，  \n我們在這微光裡，  \n找不到宏大的史詩，  \n卻有溫柔的日常——  \n一杯咖啡、一塊餅乾、  \n以及彼此的沉默微笑。",
+    "trace": []
+  }
+]

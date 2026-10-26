@@ -1,0 +1,761 @@
+{
+  "metadata": {
+    "started_at": "2026-10-26T04:19:03.789635+08:00",
+    "model": "Furen-large",
+    "provider_host": "www.iai.nkust.edu.tw",
+    "sdk_version": "3.37.0",
+    "planned_questions": 10,
+    "max_steps": 6,
+    "request_interval_seconds": 5,
+    "prompt_sha256": "44f2154ec0c239bb855e91cb535952f4d672cafc2caca52e3f4daabc83f9607e",
+    "source_sha256": {
+      "agent.py": "9b672429aa0a514d676ffc2f6a24f684b7f0fca0d8957f288d61b991afddee40",
+      "store_tools.py": "fb0433cf08a79a790144b931532c9e393b6c520e627950fbee3d934c458b0817",
+      "database.py": "861031d292a650d9a1cf93ebedc7a1d3f66a211d2fc422398921037b04cb724d",
+      "shop_info.csv": "fa251c70cd0bd330f2cb11cfe7f12e5309e9f68f47bda13fb232cc9c3c40e601",
+      "products.csv": "8fd1171c7253cb535dd293292f21d72514ee1f8fb5e22537156c459ac5dfa3eb",
+      "tool_choice_cases.json": "b178c4f3e98724cc80e91742ef62a342731051693f0b388c1f18507b5e0fa463"
+    },
+    "finished_at": "2026-10-26T04:20:55.921716+08:00",
+    "content_review_method": "Codex reviewed every original answer against the predefined expected outcome, CSV facts and actual tool trace.",
+    "change_notes_zh": "本次正式 10 題測試在目前版本第一次執行，10 題工具選擇及回答內容均通過，因此本輪沒有新增修正或重測。測試期間未更動 Agent、工具、CSV 或預先固定的題目，已核對來源雜湊。先前連線測試曾發現範圍外仍寫詩，以及第二件 6 折被誤稱半價；已在正式測試前加強服務範圍規則、補齊計算工具的優惠名稱與金額明細，並限制模型引用工具提供的促銷名稱。原始失敗與修正後測試保留在上一層的 live-agent-checks.json、live-scope-retest.json、live-gradio.json、live-gradio-final.json。這些先前整合測試不作為本次 10 題的前測分數。",
+    "change_notes_en": "This was the first formal run of the predefined ten-question set on the current version. All ten tool choices and answer-content checks passed, so no additional fix or retest was needed in this round. The agent, tools, CSV files and predefined questions remained unchanged during the run; their source hashes were checked. Earlier connection checks exposed unwanted poem generation and a 60%-price offer being described as half price. Before the formal run, the scope rules were strengthened, the calculator was extended to return the exact offer label and pricing details, and the model was instructed to quote the returned label. Original failures and retests remain in the parent directory as live-agent-checks.json, live-scope-retest.json, live-gradio.json and live-gradio-final.json. Those earlier integration checks are not treated as a baseline score for this ten-question set."
+  },
+  "results": [
+    {
+      "id": "T01",
+      "category": "Information",
+      "question": "你們每天幾點開門、幾點打烊？",
+      "question_en": "What time do you open and close each day?",
+      "required_tools": [
+        "get_shop_info"
+      ],
+      "optional_tools": [],
+      "must_precede": [],
+      "evidence": {
+        "info_topic": "opening_hours"
+      },
+      "expected_outcome": "依資料回答每日 07:00–23:00，不補造特殊節日時間。",
+      "expected_outcome_en": "Report daily opening hours of 07:00–23:00 without inventing holiday hours.",
+      "tested_at": "2026-10-26T04:19:09.979367+08:00",
+      "status": "ok",
+      "model_calls": 2,
+      "elapsed_seconds": 6.0,
+      "answer": "\n我們每天的營業時間是早上 07:00 開門，晚上 23:00 打烊。祝您購物愉快！",
+      "trace": [
+        {
+          "step": 1,
+          "tool": "get_shop_info",
+          "arguments": {
+            "topic": "opening_hours"
+          },
+          "result": {
+            "found": true,
+            "topic": "opening_hours",
+            "content": "每日 07:00–23:00，示範資料未提供特殊節日營業時間。"
+          }
+        }
+      ],
+      "checks": {
+        "completed": true,
+        "required_tools_present": true,
+        "only_acceptable_tools": true,
+        "required_order": true,
+        "tool_execution_succeeded": true,
+        "parameters_and_data_match": true
+      },
+      "tool_choice_pass": true,
+      "answer_review": {
+        "passed": true,
+        "reviewer": "Codex",
+        "reviewed_at": "2026-10-26T04:22:31.710506+08:00",
+        "note_zh": "開門 07:00、打烊 23:00，符合資訊表；未新增特殊節日時間。",
+        "note_en": "The 07:00 opening time and 23:00 closing time match the information table, with no invented holiday hours."
+      }
+    },
+    {
+      "id": "T02",
+      "category": "Information",
+      "question": "買東西可以付現金或刷信用卡嗎？",
+      "question_en": "Can I pay with cash or a credit card?",
+      "required_tools": [
+        "get_shop_info"
+      ],
+      "optional_tools": [],
+      "must_precede": [],
+      "evidence": {
+        "info_topic": "payment"
+      },
+      "expected_outcome": "回答接受現金與信用卡，不自行新增付款方式。",
+      "expected_outcome_en": "Confirm cash and credit cards without inventing other payment methods.",
+      "tested_at": "2026-10-26T04:19:20.106955+08:00",
+      "status": "ok",
+      "model_calls": 2,
+      "elapsed_seconds": 10.12,
+      "answer": "\n可以。本店接受現金付款及信用卡刷卡，其他付款方式示範資料中未提供。若您還有其他付款相關問題，請隨時告訴我。",
+      "trace": [
+        {
+          "step": 1,
+          "tool": "get_shop_info",
+          "arguments": {
+            "topic": "payment"
+          },
+          "result": {
+            "found": true,
+            "topic": "payment",
+            "content": "接受現金及信用卡，示範資料未提供其他付款方式。"
+          }
+        }
+      ],
+      "checks": {
+        "completed": true,
+        "required_tools_present": true,
+        "only_acceptable_tools": true,
+        "required_order": true,
+        "tool_execution_succeeded": true,
+        "parameters_and_data_match": true
+      },
+      "tool_choice_pass": true,
+      "answer_review": {
+        "passed": true,
+        "reviewer": "Codex",
+        "reviewed_at": "2026-10-26T04:22:31.710506+08:00",
+        "note_zh": "明確確認現金與信用卡；其他付款方式標示為未提供。",
+        "note_en": "The response confirms cash and credit cards and states that other payment methods are not specified."
+      }
+    },
+    {
+      "id": "T03",
+      "category": "Information",
+      "question": "我開車過去，你們有自己的停車場嗎？",
+      "question_en": "Do you have your own parking lot?",
+      "required_tools": [
+        "get_shop_info"
+      ],
+      "optional_tools": [],
+      "must_precede": [],
+      "evidence": {
+        "info_topic": "parking"
+      },
+      "expected_outcome": "說明沒有專用停車場；附近停車資訊未提供，不編造。",
+      "expected_outcome_en": "State that the store has no dedicated parking and do not invent nearby parking information.",
+      "tested_at": "2026-10-26T04:19:31.169808+08:00",
+      "status": "ok",
+      "model_calls": 2,
+      "elapsed_seconds": 11.06,
+      "answer": "\n我們的門市沒有專用停車場，且目前的示範資料中也沒有提供附近停車資訊。如果您需要了解附近的停車選擇，建議直接前往現場觀察或使用導航App查詢。如有其他問題，歡迎隨時詢問！",
+      "trace": [
+        {
+          "step": 1,
+          "tool": "get_shop_info",
+          "arguments": {
+            "topic": "parking"
+          },
+          "result": {
+            "found": true,
+            "topic": "parking",
+            "content": "門市沒有專用停車場，示範資料未提供附近停車資訊。"
+          }
+        }
+      ],
+      "checks": {
+        "completed": true,
+        "required_tools_present": true,
+        "only_acceptable_tools": true,
+        "required_order": true,
+        "tool_execution_succeeded": true,
+        "parameters_and_data_match": true
+      },
+      "tool_choice_pass": true,
+      "answer_review": {
+        "passed": true,
+        "reviewer": "Codex",
+        "reviewed_at": "2026-10-26T04:22:31.710506+08:00",
+        "note_zh": "正確說沒有專用停車場，且附近資訊未提供；附加一般查詢建議，未編造具體停車位置。",
+        "note_en": "The response correctly states that there is no dedicated parking and no nearby parking data. It adds generic lookup advice without inventing a parking location."
+      }
+    },
+    {
+      "id": "T04",
+      "category": "Product lookup",
+      "question": "中杯熱拿鐵一杯多少錢？現在還有幾杯的庫存？",
+      "question_en": "How much is a medium hot latte, and how many are in stock?",
+      "required_tools": [
+        "search_products"
+      ],
+      "optional_tools": [],
+      "must_precede": [],
+      "evidence": {
+        "product": {
+          "product_id": "P002",
+          "price_twd": 55,
+          "stock": 30,
+          "available": 1
+        }
+      },
+      "expected_outcome": "回答單價 55 元、庫存 30、可供應，不進行不必要的結帳計算。",
+      "expected_outcome_en": "Report a TWD 55 unit price and stock of 30, with no unnecessary checkout calculation.",
+      "tested_at": "2026-10-26T04:19:40.695683+08:00",
+      "status": "ok",
+      "model_calls": 2,
+      "elapsed_seconds": 9.53,
+      "answer": "\n\n中杯熱拿鐵的售價是 **55 元 TWD**，目前庫存尚有 **30 杯**。如需購買或查詢其他商品，隨時告訴我！",
+      "trace": [
+        {
+          "step": 1,
+          "tool": "search_products",
+          "arguments": {
+            "keyword": "中杯熱拿鐵"
+          },
+          "result": {
+            "found": true,
+            "currency": "TWD",
+            "products": [
+              {
+                "product_id": "P002",
+                "name": "中杯熱拿鐵",
+                "category": "咖啡",
+                "price_twd": 55,
+                "available": 1,
+                "stock": 30,
+                "second_item_offer": 1,
+                "aliases": "拿鐵|熱拿鐵|latte"
+              }
+            ]
+          }
+        }
+      ],
+      "checks": {
+        "completed": true,
+        "required_tools_present": true,
+        "only_acceptable_tools": true,
+        "required_order": true,
+        "tool_execution_succeeded": true,
+        "parameters_and_data_match": true
+      },
+      "tool_choice_pass": true,
+      "answer_review": {
+        "passed": true,
+        "reviewer": "Codex",
+        "reviewed_at": "2026-10-26T04:22:31.710506+08:00",
+        "note_zh": "單價 55 元、庫存 30 杯，與 P002 的資料一致。",
+        "note_en": "The TWD 55 unit price and stock of 30 match product P002."
+      }
+    },
+    {
+      "id": "T05",
+      "category": "Availability",
+      "question": "折疊雨傘現在有貨可以買嗎？",
+      "question_en": "Is the folding umbrella available to buy now?",
+      "required_tools": [
+        "search_products"
+      ],
+      "optional_tools": [],
+      "must_precede": [],
+      "evidence": {
+        "product": {
+          "product_id": "P015",
+          "available": 0,
+          "stock": 0
+        }
+      },
+      "expected_outcome": "明確說目前缺貨或無法供應；不能把查到品項當作有庫存。",
+      "expected_outcome_en": "Clearly report that the umbrella is unavailable or out of stock.",
+      "tested_at": "2026-10-26T04:19:50.885726+08:00",
+      "status": "ok",
+      "model_calls": 2,
+      "elapsed_seconds": 10.19,
+      "answer": "\n折疊雨傘目前庫存為 0，暫時無法購買。您想看看其他類似的商品，或是有其他需要幫忙的嗎？",
+      "trace": [
+        {
+          "step": 1,
+          "tool": "search_products",
+          "arguments": {
+            "keyword": "折疊雨傘"
+          },
+          "result": {
+            "found": true,
+            "currency": "TWD",
+            "products": [
+              {
+                "product_id": "P015",
+                "name": "折疊雨傘",
+                "category": "日用品",
+                "price_twd": 199,
+                "available": 0,
+                "stock": 0,
+                "second_item_offer": 0,
+                "aliases": "雨傘|傘|umbrella"
+              }
+            ]
+          }
+        }
+      ],
+      "checks": {
+        "completed": true,
+        "required_tools_present": true,
+        "only_acceptable_tools": true,
+        "required_order": true,
+        "tool_execution_succeeded": true,
+        "parameters_and_data_match": true
+      },
+      "tool_choice_pass": true,
+      "answer_review": {
+        "passed": true,
+        "reviewer": "Codex",
+        "reviewed_at": "2026-10-26T04:22:31.710506+08:00",
+        "note_zh": "將 available=0、stock=0 正確解讀為缺貨，沒有把查到商品當作有貨。",
+        "note_en": "The response correctly interprets available=0 and stock=0 as unavailable rather than treating a search match as available stock."
+      }
+    },
+    {
+      "id": "T06",
+      "category": "Calculation",
+      "question": "買 3 杯中杯熱拿鐵，加 1 個購物袋，總共多少錢？請說明適用優惠。",
+      "question_en": "What is the total for three medium hot lattes and one shopping bag? Explain the applicable offer.",
+      "required_tools": [
+        "search_products",
+        "calculate_checkout"
+      ],
+      "optional_tools": [
+        "get_shop_info"
+      ],
+      "must_precede": [
+        [
+          "search_products",
+          "calculate_checkout"
+        ]
+      ],
+      "evidence": {
+        "checkout": {
+          "quantities": {
+            "P002": 3
+          },
+          "bag_quantity": 1,
+          "discount_twd": 22,
+          "total_twd": 145
+        }
+      },
+      "expected_outcome": "計算工具回傳 145 元；優惠為同商品第二件 6 折，不能稱為半價。",
+      "expected_outcome_en": "Use the calculator's TWD 145 total and correctly describe the same-product second item as 60% of its regular price.",
+      "tested_at": "2026-10-26T04:20:06.292758+08:00",
+      "status": "ok",
+      "model_calls": 3,
+      "elapsed_seconds": 15.41,
+      "answer": "\n\n買 3 杯中杯熱拿鐵（單價 55 元）適用「同商品第二件6折」優惠，加上 1 個購物袋（每個 2 元），總計 **145 元**（含袋子費 2 元）。\n\n明細如下：\n- 中杯熱拿鐵 3 杯：原價 165 元 → 折扣 22 元（第二件 6 折） → 小計 143 元  \n- 購物袋 1 個：2 元  \n- **合計：145 元**  \n\n如需其他商品或調整數量，請告訴我！",
+      "trace": [
+        {
+          "step": 1,
+          "tool": "search_products",
+          "arguments": {
+            "keyword": "中杯熱拿鐵"
+          },
+          "result": {
+            "found": true,
+            "currency": "TWD",
+            "products": [
+              {
+                "product_id": "P002",
+                "name": "中杯熱拿鐵",
+                "category": "咖啡",
+                "price_twd": 55,
+                "available": 1,
+                "stock": 30,
+                "second_item_offer": 1,
+                "aliases": "拿鐵|熱拿鐵|latte"
+              }
+            ]
+          }
+        },
+        {
+          "step": 2,
+          "tool": "calculate_checkout",
+          "arguments": {
+            "items": [
+              {
+                "product_id": "P002",
+                "quantity": 3
+              }
+            ],
+            "bag_quantity": 1
+          },
+          "result": {
+            "ok": true,
+            "currency": "TWD",
+            "quote_only": true,
+            "lines": [
+              {
+                "product_id": "P002",
+                "name": "中杯熱拿鐵",
+                "quantity": 3,
+                "unit_price_twd": 55,
+                "discounted_units": 1,
+                "original_subtotal_twd": 165,
+                "discounted_unit_price_twd": 33,
+                "promotion_label": "同商品第二件6折",
+                "discount_twd": 22,
+                "subtotal_twd": 143
+              }
+            ],
+            "original_goods_subtotal_twd": 165,
+            "goods_subtotal_twd": 143,
+            "discount_twd": 22,
+            "bag_quantity": 1,
+            "bag_unit_price_twd": 2,
+            "bag_fee_twd": 2,
+            "total_twd": 145
+          }
+        }
+      ],
+      "checks": {
+        "completed": true,
+        "required_tools_present": true,
+        "only_acceptable_tools": true,
+        "required_order": true,
+        "tool_execution_succeeded": true,
+        "parameters_and_data_match": true
+      },
+      "tool_choice_pass": true,
+      "answer_review": {
+        "passed": true,
+        "reviewer": "Codex",
+        "reviewed_at": "2026-10-26T04:22:31.710506+08:00",
+        "note_zh": "引用同商品第二件 6 折，折扣 22 元、小計 143 元、袋子 2 元、總計 145 元均符合工具結果。",
+        "note_en": "The same-product second-item offer is correctly described as 60% of regular price. The TWD 22 discount, TWD 143 subtotal, TWD 2 bag and TWD 145 total match the tool result."
+      }
+    },
+    {
+      "id": "T07",
+      "category": "Calculation",
+      "question": "買 1 杯中杯熱美式咖啡和 1 杯中杯熱拿鐵，另外要 2 個購物袋，合計多少錢？這兩杯能湊第二件優惠嗎？",
+      "question_en": "What is the total for one medium hot Americano, one medium hot latte and two bags? Can the different drinks form a promotional pair?",
+      "required_tools": [
+        "search_products",
+        "calculate_checkout"
+      ],
+      "optional_tools": [
+        "get_shop_info"
+      ],
+      "must_precede": [
+        [
+          "search_products",
+          "calculate_checkout"
+        ]
+      ],
+      "evidence": {
+        "checkout": {
+          "quantities": {
+            "P001": 1,
+            "P002": 1
+          },
+          "bag_quantity": 2,
+          "discount_twd": 0,
+          "total_twd": 104
+        }
+      },
+      "expected_outcome": "工具回傳 104 元（45＋55＋4），不同商品不能混搭成第二件優惠。",
+      "expected_outcome_en": "Use the calculator's TWD 104 total (45 + 55 + 4) and explain that different products cannot form a promotional pair.",
+      "tested_at": "2026-10-26T04:20:26.222483+08:00",
+      "status": "ok",
+      "model_calls": 4,
+      "elapsed_seconds": 19.92,
+      "answer": "\n合計 104 元（商品小計 100 元 + 2 個購物袋 4 元）。  \n因為第二件優惠只適用於「同一商品」的第二件，熱美式咖啡和熱拿屬於不同商品，所以無法湊成折扣。  \n若您想使用優惠，可考慮購買兩杯同款（例如兩杯熱美式咖啡或兩杯熱拿鐵）。",
+      "trace": [
+        {
+          "step": 1,
+          "tool": "search_products",
+          "arguments": {
+            "keyword": "中杯熱美式咖啡"
+          },
+          "result": {
+            "found": true,
+            "currency": "TWD",
+            "products": [
+              {
+                "product_id": "P001",
+                "name": "中杯熱美式咖啡",
+                "category": "咖啡",
+                "price_twd": 45,
+                "available": 1,
+                "stock": 40,
+                "second_item_offer": 1,
+                "aliases": "美式|熱美式|americano"
+              }
+            ]
+          }
+        },
+        {
+          "step": 2,
+          "tool": "search_products",
+          "arguments": {
+            "keyword": "中杯熱拿鐵"
+          },
+          "result": {
+            "found": true,
+            "currency": "TWD",
+            "products": [
+              {
+                "product_id": "P002",
+                "name": "中杯熱拿鐵",
+                "category": "咖啡",
+                "price_twd": 55,
+                "available": 1,
+                "stock": 30,
+                "second_item_offer": 1,
+                "aliases": "拿鐵|熱拿鐵|latte"
+              }
+            ]
+          }
+        },
+        {
+          "step": 3,
+          "tool": "calculate_checkout",
+          "arguments": {
+            "items": [
+              {
+                "product_id": "P001",
+                "quantity": 1
+              },
+              {
+                "product_id": "P002",
+                "quantity": 1
+              }
+            ],
+            "bag_quantity": 2
+          },
+          "result": {
+            "ok": true,
+            "currency": "TWD",
+            "quote_only": true,
+            "lines": [
+              {
+                "product_id": "P001",
+                "name": "中杯熱美式咖啡",
+                "quantity": 1,
+                "unit_price_twd": 45,
+                "discounted_units": 0,
+                "original_subtotal_twd": 45,
+                "discounted_unit_price_twd": null,
+                "promotion_label": null,
+                "discount_twd": 0,
+                "subtotal_twd": 45
+              },
+              {
+                "product_id": "P002",
+                "name": "中杯熱拿鐵",
+                "quantity": 1,
+                "unit_price_twd": 55,
+                "discounted_units": 0,
+                "original_subtotal_twd": 55,
+                "discounted_unit_price_twd": null,
+                "promotion_label": null,
+                "discount_twd": 0,
+                "subtotal_twd": 55
+              }
+            ],
+            "original_goods_subtotal_twd": 100,
+            "goods_subtotal_twd": 100,
+            "discount_twd": 0,
+            "bag_quantity": 2,
+            "bag_unit_price_twd": 2,
+            "bag_fee_twd": 4,
+            "total_twd": 104
+          }
+        }
+      ],
+      "checks": {
+        "completed": true,
+        "required_tools_present": true,
+        "only_acceptable_tools": true,
+        "required_order": true,
+        "tool_execution_succeeded": true,
+        "parameters_and_data_match": true
+      },
+      "tool_choice_pass": true,
+      "answer_review": {
+        "passed": true,
+        "reviewer": "Codex",
+        "reviewed_at": "2026-10-26T04:22:31.710506+08:00",
+        "note_zh": "正確回答不同商品不能混搭，商品 100 元加袋子 4 元，總計 104 元；未套用不存在的折扣。",
+        "note_en": "The response correctly disallows pairing different products and reports a TWD 100 goods subtotal plus TWD 4 for bags, totaling TWD 104 with no discount."
+      }
+    },
+    {
+      "id": "T08",
+      "category": "Missing data",
+      "question": "你們有賣榴槤嗎？",
+      "question_en": "Do you sell durian?",
+      "required_tools": [
+        "search_products",
+        "transfer_to_human"
+      ],
+      "optional_tools": [],
+      "must_precede": [
+        [
+          "search_products",
+          "transfer_to_human"
+        ]
+      ],
+      "evidence": {
+        "missing_product": true,
+        "human_contact": true
+      },
+      "expected_outcome": "先查商品，查不到時說沒有販售資訊並提供真人聯絡方式，不聲稱已通知真人。",
+      "expected_outcome_en": "Search first, acknowledge missing product information and provide human contact details without claiming a real transfer.",
+      "tested_at": "2026-10-26T04:20:42.209607+08:00",
+      "status": "ok",
+      "model_calls": 3,
+      "elapsed_seconds": 15.99,
+      "answer": "\n\n我目前查不到店內有販售榴槤的資料。若您想進一步確認或有其他需求，可以透過以下方式聯絡我們：\n\n- 電子郵件：service@corner-demo.example  \n- 服務時間：每日 09:00–18:00（此為示範系統提供的聯絡方式）  \n\n有其他關於本店商品、營業資訊或優惠試算的問題嗎？請告訴我！",
+      "trace": [
+        {
+          "step": 1,
+          "tool": "search_products",
+          "arguments": {
+            "keyword": "榴槤"
+          },
+          "result": {
+            "found": false,
+            "currency": "TWD",
+            "products": []
+          }
+        },
+        {
+          "step": 2,
+          "tool": "transfer_to_human",
+          "arguments": {
+            "reason": "查詢榴槤無結果"
+          },
+          "result": {
+            "status": "contact_provided",
+            "connected": false,
+            "reason": "查詢榴槤無結果",
+            "contact": {
+              "email": "service@corner-demo.example",
+              "service_hours": "每日 09:00–18:00",
+              "demo_only": true
+            }
+          }
+        }
+      ],
+      "checks": {
+        "completed": true,
+        "required_tools_present": true,
+        "only_acceptable_tools": true,
+        "required_order": true,
+        "tool_execution_succeeded": true,
+        "parameters_and_data_match": true
+      },
+      "tool_choice_pass": true,
+      "answer_review": {
+        "passed": true,
+        "reviewer": "Codex",
+        "reviewed_at": "2026-10-26T04:22:31.710506+08:00",
+        "note_zh": "明確說查不到榴槤販售資料，提供示範信箱和服務時間，未聲稱已通知或轉接真人。",
+        "note_en": "The response acknowledges missing durian information and provides the demo email address and service hours without claiming an actual notification or transfer."
+      }
+    },
+    {
+      "id": "T09",
+      "category": "Human contact",
+      "question": "我要客訴，請給我真人客服的聯絡方式。",
+      "question_en": "I want to make a complaint. Please give me the human customer service contact details.",
+      "required_tools": [
+        "transfer_to_human"
+      ],
+      "optional_tools": [
+        "get_shop_info"
+      ],
+      "must_precede": [],
+      "evidence": {
+        "human_contact": true
+      },
+      "expected_outcome": "透過真人工具提供 service@corner-demo.example 與服務時間，不聲稱已完成實際轉接。",
+      "expected_outcome_en": "Use the handoff tool to provide service@corner-demo.example and service hours without claiming an actual transfer.",
+      "tested_at": "2026-10-26T04:20:50.300986+08:00",
+      "status": "ok",
+      "model_calls": 2,
+      "elapsed_seconds": 8.09,
+      "answer": "\n\n您好，這裡是提供真人客服的聯絡方式：\n\n- 電子郵件：service@corner-demo.example  \n- 服務時間：每日 09:00–18:00  \n\n（此為教學示範資料，僅供參考。）",
+      "trace": [
+        {
+          "step": 1,
+          "tool": "transfer_to_human",
+          "arguments": {
+            "reason": "客訴"
+          },
+          "result": {
+            "status": "contact_provided",
+            "connected": false,
+            "reason": "客訴",
+            "contact": {
+              "email": "service@corner-demo.example",
+              "service_hours": "每日 09:00–18:00",
+              "demo_only": true
+            }
+          }
+        }
+      ],
+      "checks": {
+        "completed": true,
+        "required_tools_present": true,
+        "only_acceptable_tools": true,
+        "required_order": true,
+        "tool_execution_succeeded": true,
+        "parameters_and_data_match": true
+      },
+      "tool_choice_pass": true,
+      "answer_review": {
+        "passed": true,
+        "reviewer": "Codex",
+        "reviewed_at": "2026-10-26T04:22:31.710506+08:00",
+        "note_zh": "提供正確示範信箱及 09:00–18:00 服務時間，未聲稱實際轉接。",
+        "note_en": "The response provides the correct demo email and 09:00–18:00 service hours without claiming an actual transfer."
+      }
+    },
+    {
+      "id": "T10",
+      "category": "Out of scope",
+      "question": "請幫我寫一首以便利商店為主題的詩。",
+      "question_en": "Please write a poem about a convenience store.",
+      "required_tools": [],
+      "optional_tools": [],
+      "must_precede": [],
+      "evidence": {},
+      "expected_outcome": "不呼叫工具，禮貌婉拒寫詩並引導回店家資訊、商品與優惠試算。",
+      "expected_outcome_en": "Call no tools, politely refuse the creative-writing request and redirect to store-related assistance.",
+      "tested_at": "2026-10-26T04:20:55.919710+08:00",
+      "status": "ok",
+      "model_calls": 1,
+      "elapsed_seconds": 5.62,
+      "answer": "\n\n我只能協助本店商品、營業資訊與優惠試算，請問你想查詢什麼？",
+      "trace": [],
+      "checks": {
+        "completed": true,
+        "required_tools_present": true,
+        "only_acceptable_tools": true,
+        "required_order": true,
+        "tool_execution_succeeded": true,
+        "parameters_and_data_match": true
+      },
+      "tool_choice_pass": true,
+      "answer_review": {
+        "passed": true,
+        "reviewer": "Codex",
+        "reviewed_at": "2026-10-26T04:22:31.710506+08:00",
+        "note_zh": "直接婉拒創作並引導回店家商品、營業資訊與優惠試算，沒有產生詩歌或呼叫工具。",
+        "note_en": "The response refuses creative writing and redirects to products, opening information and quotes. It produces no poem and calls no tools."
+      }
+    }
+  ],
+  "summary": {
+    "questions": 10,
+    "tool_choice_passed": 10,
+    "tool_choice_accuracy_percent": 100.0,
+    "content_review_passed": 10,
+    "content_accuracy_percent": 100.0,
+    "model_calls": 23,
+    "tool_calls": 13,
+    "all_source_hashes_verified": true
+  }
+}

@@ -1,0 +1,11 @@
+topic,content
+store_name,巷口便利商店（虛構教學商店）
+opening_hours,每日 07:00–23:00，示範資料未提供特殊節日營業時間。
+address,示範市學習路 7 號（虛構地址，沒有實體門市）。
+payment,接受現金及信用卡，示範資料未提供其他付款方式。
+parking,門市沒有專用停車場，示範資料未提供附近停車資訊。
+services,提供商品資訊查詢、優惠試算及預訂自取諮詢；本系統不會實際下單或扣款。
+pickup,商品可洽門市預訂自取；預訂、保留庫存與取貨時間均需由真人確認。
+returns,退換貨與客訴請聯絡真人窗口，由人員依商品與購買情況確認處理方式。
+contact,"{""email"":""service@corner-demo.example"",""service_hours"":""每日 09:00–18:00"",""demo_only"":true}"
+checkout_rules,"{""second_item_percent"":60,""bag_price_twd"":2,""rounding"":""第二件價格四捨五入至整數元"",""pairing"":""僅限有標示優惠的同商品，每兩件中一件原價、另一件按 60% 計價；不同商品不可混搭，奇數剩餘一件原價"",""currency"":""TWD""}"

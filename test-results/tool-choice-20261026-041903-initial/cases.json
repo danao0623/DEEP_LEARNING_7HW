@@ -1,0 +1,96 @@
+[
+  {
+    "id": "T01", "category": "Information",
+    "question": "你們每天幾點開門、幾點打烊？",
+    "question_en": "What time do you open and close each day?",
+    "required_tools": ["get_shop_info"], "optional_tools": [],
+    "must_precede": [], "evidence": {"info_topic": "opening_hours"},
+    "expected_outcome": "依資料回答每日 07:00–23:00，不補造特殊節日時間。",
+    "expected_outcome_en": "Report daily opening hours of 07:00–23:00 without inventing holiday hours."
+  },
+  {
+    "id": "T02", "category": "Information",
+    "question": "買東西可以付現金或刷信用卡嗎？",
+    "question_en": "Can I pay with cash or a credit card?",
+    "required_tools": ["get_shop_info"], "optional_tools": [],
+    "must_precede": [], "evidence": {"info_topic": "payment"},
+    "expected_outcome": "回答接受現金與信用卡，不自行新增付款方式。",
+    "expected_outcome_en": "Confirm cash and credit cards without inventing other payment methods."
+  },
+  {
+    "id": "T03", "category": "Information",
+    "question": "我開車過去，你們有自己的停車場嗎？",
+    "question_en": "Do you have your own parking lot?",
+    "required_tools": ["get_shop_info"], "optional_tools": [],
+    "must_precede": [], "evidence": {"info_topic": "parking"},
+    "expected_outcome": "說明沒有專用停車場；附近停車資訊未提供，不編造。",
+    "expected_outcome_en": "State that the store has no dedicated parking and do not invent nearby parking information."
+  },
+  {
+    "id": "T04", "category": "Product lookup",
+    "question": "中杯熱拿鐵一杯多少錢？現在還有幾杯的庫存？",
+    "question_en": "How much is a medium hot latte, and how many are in stock?",
+    "required_tools": ["search_products"], "optional_tools": [],
+    "must_precede": [],
+    "evidence": {"product": {"product_id": "P002", "price_twd": 55, "stock": 30, "available": 1}},
+    "expected_outcome": "回答單價 55 元、庫存 30、可供應，不進行不必要的結帳計算。",
+    "expected_outcome_en": "Report a TWD 55 unit price and stock of 30, with no unnecessary checkout calculation."
+  },
+  {
+    "id": "T05", "category": "Availability",
+    "question": "折疊雨傘現在有貨可以買嗎？",
+    "question_en": "Is the folding umbrella available to buy now?",
+    "required_tools": ["search_products"], "optional_tools": [],
+    "must_precede": [],
+    "evidence": {"product": {"product_id": "P015", "available": 0, "stock": 0}},
+    "expected_outcome": "明確說目前缺貨或無法供應；不能把查到品項當作有庫存。",
+    "expected_outcome_en": "Clearly report that the umbrella is unavailable or out of stock."
+  },
+  {
+    "id": "T06", "category": "Calculation",
+    "question": "買 3 杯中杯熱拿鐵，加 1 個購物袋，總共多少錢？請說明適用優惠。",
+    "question_en": "What is the total for three medium hot lattes and one shopping bag? Explain the applicable offer.",
+    "required_tools": ["search_products", "calculate_checkout"], "optional_tools": ["get_shop_info"],
+    "must_precede": [["search_products", "calculate_checkout"]],
+    "evidence": {"checkout": {"quantities": {"P002": 3}, "bag_quantity": 1, "discount_twd": 22, "total_twd": 145}},
+    "expected_outcome": "計算工具回傳 145 元；優惠為同商品第二件 6 折，不能稱為半價。",
+    "expected_outcome_en": "Use the calculator's TWD 145 total and correctly describe the same-product second item as 60% of its regular price."
+  },
+  {
+    "id": "T07", "category": "Calculation",
+    "question": "買 1 杯中杯熱美式咖啡和 1 杯中杯熱拿鐵，另外要 2 個購物袋，合計多少錢？這兩杯能湊第二件優惠嗎？",
+    "question_en": "What is the total for one medium hot Americano, one medium hot latte and two bags? Can the different drinks form a promotional pair?",
+    "required_tools": ["search_products", "calculate_checkout"], "optional_tools": ["get_shop_info"],
+    "must_precede": [["search_products", "calculate_checkout"]],
+    "evidence": {"checkout": {"quantities": {"P001": 1, "P002": 1}, "bag_quantity": 2, "discount_twd": 0, "total_twd": 104}},
+    "expected_outcome": "工具回傳 104 元（45＋55＋4），不同商品不能混搭成第二件優惠。",
+    "expected_outcome_en": "Use the calculator's TWD 104 total (45 + 55 + 4) and explain that different products cannot form a promotional pair."
+  },
+  {
+    "id": "T08", "category": "Missing data",
+    "question": "你們有賣榴槤嗎？",
+    "question_en": "Do you sell durian?",
+    "required_tools": ["search_products", "transfer_to_human"], "optional_tools": [],
+    "must_precede": [["search_products", "transfer_to_human"]],
+    "evidence": {"missing_product": true, "human_contact": true},
+    "expected_outcome": "先查商品，查不到時說沒有販售資訊並提供真人聯絡方式，不聲稱已通知真人。",
+    "expected_outcome_en": "Search first, acknowledge missing product information and provide human contact details without claiming a real transfer."
+  },
+  {
+    "id": "T09", "category": "Human contact",
+    "question": "我要客訴，請給我真人客服的聯絡方式。",
+    "question_en": "I want to make a complaint. Please give me the human customer service contact details.",
+    "required_tools": ["transfer_to_human"], "optional_tools": ["get_shop_info"],
+    "must_precede": [], "evidence": {"human_contact": true},
+    "expected_outcome": "透過真人工具提供 service@corner-demo.example 與服務時間，不聲稱已完成實際轉接。",
+    "expected_outcome_en": "Use the handoff tool to provide service@corner-demo.example and service hours without claiming an actual transfer."
+  },
+  {
+    "id": "T10", "category": "Out of scope",
+    "question": "請幫我寫一首以便利商店為主題的詩。",
+    "question_en": "Please write a poem about a convenience store.",
+    "required_tools": [], "optional_tools": [], "must_precede": [], "evidence": {},
+    "expected_outcome": "不呼叫工具，禮貌婉拒寫詩並引導回店家資訊、商品與優惠試算。",
+    "expected_outcome_en": "Call no tools, politely refuse the creative-writing request and redirect to store-related assistance."
+  }
+]

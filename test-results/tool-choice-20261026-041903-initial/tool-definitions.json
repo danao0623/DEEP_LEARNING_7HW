@@ -1,0 +1,115 @@
+[
+  {
+    "type": "function",
+    "function": {
+      "name": "get_shop_info",
+      "description": "查便利商店資訊。營業時間 opening_hours、地址 address、付款 payment、停車 parking、服務 services、自取 pickup、退換貨 returns、聯絡 contact、優惠及袋子費 checkout_rules。",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "topic": {
+            "type": "string",
+            "enum": [
+              "store_name",
+              "opening_hours",
+              "address",
+              "payment",
+              "parking",
+              "services",
+              "pickup",
+              "returns",
+              "contact",
+              "checkout_rules"
+            ]
+          }
+        },
+        "required": [
+          "topic"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "search_products",
+      "description": "按商品名稱、別名、分類或商品編號查價格、庫存、是否供應和第二件優惠。例如拿鐵、飲料、P002；空字串可列出所有商品。計算前先用此工具取得商品編號。",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "keyword": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "keyword"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "calculate_checkout",
+      "description": "試算購物總價：從資料庫取得售價和優惠，同商品每兩件套用第二件優惠，再加購物袋費。商品需使用 search_products 查到的 product_id。這是報價，不會下單、付款或扣庫存。",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 30,
+            "items": {
+              "type": "object",
+              "properties": {
+                "product_id": {
+                  "type": "string"
+                },
+                "quantity": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 100
+                }
+              },
+              "required": [
+                "product_id",
+                "quantity"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "bag_quantity": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 20
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "transfer_to_human",
+      "description": "客人要求真人、客訴，或工具查不到所需資訊時，提供真人聯絡方式。只提供聯絡資訊，不代表已經轉接或通知任何人。",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "reason"
+        ],
+        "additionalProperties": false
+      }
+    }
+  }
+]

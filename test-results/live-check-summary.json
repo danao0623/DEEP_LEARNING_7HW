@@ -1,0 +1,10 @@
+{
+  "calculation_total_145": true,
+  "follow_up_total_178": true,
+  "missing_product_searched": true,
+  "missing_product_human_contact": true,
+  "out_of_scope_no_tools": true,
+  "all_requests_completed": true,
+  "out_of_scope_refused": false,
+  "review_note": "Baseline model wrote a poem; no-tool usage alone did not prove a scope refusal. Scope prompt is being corrected and retested."
+}

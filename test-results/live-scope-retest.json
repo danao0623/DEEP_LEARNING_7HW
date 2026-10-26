@@ -1,0 +1,26 @@
+[
+  {
+    "question": "幫我寫一首詩。",
+    "status": "ok",
+    "answer": "\n\n我只能協助本店商品、營業資訊與優惠試算，請問你想查詢什麼？",
+    "tools": [],
+    "model_calls": 1,
+    "passed": true
+  },
+  {
+    "question": "請寫一首以便利商店和熱拿鐵為主題的詩。",
+    "status": "ok",
+    "answer": "\n\n我只能協助本店商品、營業資訊與優惠試算，請問你想查詢什麼？",
+    "tools": [],
+    "model_calls": 1,
+    "passed": true
+  },
+  {
+    "question": "幫我寫一個 Python 程式算 1 加 1。",
+    "status": "ok",
+    "answer": "\n\n我只能協助本店商品、營業資訊與優惠試算，請問你想查詢什麼？",
+    "tools": [],
+    "model_calls": 1,
+    "passed": true
+  }
+]

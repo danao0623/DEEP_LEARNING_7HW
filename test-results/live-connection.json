@@ -1,0 +1,22 @@
+{
+  "tested_at": "2026-10-26T04:02:50.130469+08:00",
+  "question": "你們幾點營業？",
+  "status": "ok",
+  "model_calls": 2,
+  "elapsed_seconds": 3.03,
+  "answer": "\n我們的營業時間是每日 07:00–23:00（示範資料未提供特殊節日營業時間）。",
+  "trace": [
+    {
+      "step": 1,
+      "tool": "get_shop_info",
+      "arguments": {
+        "topic": "opening_hours"
+      },
+      "result": {
+        "found": true,
+        "topic": "opening_hours",
+        "content": "每日 07:00–23:00，示範資料未提供特殊節日營業時間。"
+      }
+    }
+  ]
+}
